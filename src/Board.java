@@ -1,3 +1,4 @@
+import java.util.IntSummaryStatistics;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +10,14 @@ public class Board {
 	char[][] _actualBoard;
 	int _size;
 
+	int _numOfBlacks;
+	int _numOfWhites;
+	int _numBlacksOnBorder;
+	int _numWhitesOnBorder;
+
+
+
+
 	/**
 	 * constructor
 	 * @param actualBoard the board (char[][])
@@ -17,6 +26,44 @@ public class Board {
 	public Board(char[][] actualBoard, int size){
 		_actualBoard=actualBoard;
 		_size=size;
+	}
+	public int GetNumOfBlacks() {
+		return _numOfBlacks;
+	}
+	public int GetNumOfWhites() {
+		return _numOfWhites;
+	}
+	public int GetNumBlacksOnBorder() {
+		return _numBlacksOnBorder;
+	}
+	public int GetNumWhitesOnBorder() {
+		return _numWhitesOnBorder;
+	}
+	public void CalcStates(){
+		_numOfBlacks=0;
+		_numOfWhites=0;
+		_numBlacksOnBorder=0;
+		_numWhitesOnBorder=0;
+		for(int i=0;i<_size;i++){
+			for(int j=0;j<_size;j++){
+				if(_actualBoard[i][j]== Enum.BLACK){
+					_numOfBlacks++;
+				}
+				if(_actualBoard[i][j]== Enum.WHITE){
+					_numOfWhites++;
+				}
+				if(i==0 || j==0 || i==_size-1 || j==_size-1){
+					if(_actualBoard[i][j]== Enum.BLACK){
+						_numBlacksOnBorder++;
+					}
+					if(_actualBoard[i][j]== Enum.WHITE){
+						_numWhitesOnBorder++;
+					}
+				}
+
+			}
+		}
+
 	}
 
 	/**
@@ -27,16 +74,16 @@ public class Board {
 	private boolean IsValid(Step step){
 		int i=step.GetLocation().GetI();
 		int j=step.GetLocation().GetJ();
-		if(i<0||i==_size||j<0||j==_size||_actualBoard[i][j]!= CellState.EMPTY)
+		if(i<0||i==_size||j<0||j==_size||_actualBoard[i][j]!= Enum.EMPTY)
 			return false;
-		if((i>0&&_actualBoard[i-1][j]!=CellState.EMPTY) //up != Empty
-				   ||(i<(_size-1)&&_actualBoard[i+1][j]!=CellState.EMPTY) //down != Empty
-				   ||(j>0&&_actualBoard[i][j-1]!=CellState.EMPTY) //left != Empty
-				   ||(j<(_size-1)&&_actualBoard[i][j+1]!=CellState.EMPTY)//right != Empty
-				   ||(i>0&&j>0&&_actualBoard[i-1][j-1]!=CellState.EMPTY) // upleft != Empty
-				   ||(i>0&&j<(_size-1)&&_actualBoard[i-1][j+1]!=CellState.EMPTY)// upright != Empty
-				   ||(i<(_size-1)&&j<(_size-1)&&_actualBoard[i+1][j+1]!=CellState.EMPTY)// downright != Empty
-				   ||(i<(_size-1)&&j>0&&_actualBoard[i+1][j-1]!=CellState.EMPTY)) //downlefr != Empty
+		if((i>0&&_actualBoard[i-1][j]!= Enum.EMPTY) //up != Empty
+				   ||(i<(_size-1)&&_actualBoard[i+1][j]!= Enum.EMPTY) //down != Empty
+				   ||(j>0&&_actualBoard[i][j-1]!= Enum.EMPTY) //left != Empty
+				   ||(j<(_size-1)&&_actualBoard[i][j+1]!= Enum.EMPTY)//right != Empty
+				   ||(i>0&&j>0&&_actualBoard[i-1][j-1]!= Enum.EMPTY) // upleft != Empty
+				   ||(i>0&&j<(_size-1)&&_actualBoard[i-1][j+1]!= Enum.EMPTY)// upright != Empty
+				   ||(i<(_size-1)&&j<(_size-1)&&_actualBoard[i+1][j+1]!= Enum.EMPTY)// downright != Empty
+				   ||(i<(_size-1)&&j>0&&_actualBoard[i+1][j-1]!= Enum.EMPTY)) //downlefr != Empty
 		{
 			return true;
 		}
@@ -52,6 +99,32 @@ public class Board {
 			}
 		}
 		return steps;
+	}
+	public char GameEnded(){
+		this.CalcStates();
+		if(this._numOfWhites + this._numOfBlacks == this._size * this._size){
+			if(this._numOfWhites > this._numOfBlacks){
+				return Enum.WHITE;
+			}
+			if(this._numOfWhites < this._numOfBlacks){
+				return Enum.BLACK;
+			}
+		}
+		return Enum.NOT_ENDED;
+	}
+
+	public int Heuristic(){
+		CalcStates();
+		if(_numOfWhites == _numOfBlacks){
+			return 0;
+		}
+		if(this.GameEnded() == Enum.BLACK ){
+			return Integer.MAX_VALUE;
+		}
+		if(this.GameEnded() == Enum.WHITE ){
+			return Integer.MIN_VALUE;
+		}
+		return (this._numOfBlacks - this._numOfWhites) + (this._numBlacksOnBorder - this._numWhitesOnBorder);
 	}
 
 	/**
@@ -251,6 +324,7 @@ public class Board {
 		return newBoard;
 
 	}
+
 
 
 	public void SetCell(Point p, char state){
