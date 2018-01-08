@@ -33,6 +33,9 @@ public class Main {
 		board.Print();
 		Board next=board.MakeStep(new Step(new Point(4,4),CellState.BLACK));
 		System.out.println();
+
 		next.Print();
+		next.Print();
+
 	}
 }
