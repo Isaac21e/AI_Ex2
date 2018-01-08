@@ -1,8 +1,8 @@
 /**
  * Created by Isaac on 1/5/2018.
  */
-public enum CellState {
-	EMPTY,
-	BLACK,
-	WHITE
+public class CellState {
+	public static char EMPTY='E';
+	public static char BLACK='B';
+	public static char WHITE='W';
 }

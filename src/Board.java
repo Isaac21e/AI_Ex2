@@ -6,14 +6,24 @@ import java.util.List;
  */
 public class Board {
 
-	CellState[][] _actualBoard;
+	char[][] _actualBoard;
 	int _size;
 
-	public Board(CellState[][] actualBoard, int size){
+	/**
+	 * constructor
+	 * @param actualBoard the board (char[][])
+	 * @param size size of board (size==width==height)
+	 */
+	public Board(char[][] actualBoard, int size){
 		_actualBoard=actualBoard;
 		_size=size;
 	}
 
+	/**
+	 * check whether a step is valid
+	 * @param step step to do
+	 * @return true if valid otherwise false
+	 */
 	private boolean IsValid(Step step){
 		int i=step.GetLocation().GetI();
 		int j=step.GetLocation().GetJ();
@@ -32,7 +42,7 @@ public class Board {
 		}
 		return false;
 	}
-	public List<Step> GetValidSteps(CellState color){
+	public List<Step> GetValidSteps(char color){
 		List<Step> steps= new LinkedList<Step>();
 		for(int i=0;i<_size;i++){
 			for(int j=0; j<_size;j++){
@@ -53,7 +63,7 @@ public class Board {
 		if(!IsValid(step)){
 			return null;
 		}
-		CellState newBoard[][]=this.CloneBoard();
+		char newBoard[][]=this.CloneBoard();
 		//change cell's state
 		newBoard[step.GetLocation().GetI()][step.GetLocation().GetJ()]=step.GetState();
 		CheckUP(newBoard,step);
@@ -73,8 +83,9 @@ public class Board {
 			}
 			System.out.println();
 		}
+		System.out.println();
 	}
-	private void CheckUP(CellState[][] board,Step step){
+	private void CheckUP(char[][] board,Step step){
 		int i=step.GetLocation().GetI()-1;
 		int j= step.GetLocation().GetJ();
 		List<Point> toChange= new LinkedList<>();
@@ -93,7 +104,7 @@ public class Board {
 			}
 		}
 	}
-	private void CheckDown(CellState[][] board, int size,Step step){
+	private void CheckDown(char[][] board, int size,Step step){
 		int i=step.GetLocation().GetI()+1;
 		int j= step.GetLocation().GetJ();
 		List<Point> toChange= new LinkedList<>();
@@ -112,8 +123,7 @@ public class Board {
 			}
 		}
 	}
-
-	private void CheckRight(CellState[][] board,int size,Step step){
+	private void CheckRight(char[][] board,int size,Step step){
 		int i=step.GetLocation().GetI();
 		int j= step.GetLocation().GetJ()+1;
 		List<Point> toChange= new LinkedList<>();
@@ -132,7 +142,7 @@ public class Board {
 			}
 		}
 	}
-	private void CheckLeft(CellState[][] board,Step step){
+	private void CheckLeft(char[][] board,Step step){
 		int i=step.GetLocation().GetI();
 		int j= step.GetLocation().GetJ()-1;
 		List<Point> toChange= new LinkedList<>();
@@ -151,7 +161,7 @@ public class Board {
 			}
 		}
 	}
-	private void CheckUpRIght(CellState[][] board,int size,Step step){
+	private void CheckUpRIght(char[][] board,int size,Step step){
 		int i=step.GetLocation().GetI()-1;
 		int j= step.GetLocation().GetJ()+1;
 		List<Point> toChange= new LinkedList<>();
@@ -162,6 +172,8 @@ public class Board {
 				doChange=true;
 				break;
 			}
+			j++;
+			i--;
 		}
 		if(doChange){
 			for (Point p:toChange){
@@ -169,7 +181,7 @@ public class Board {
 			}
 		}
 	}
-	private void CheckUpLeft(CellState[][] board,int size,Step step){
+	private void CheckUpLeft(char[][] board,int size,Step step){
 		int i=step.GetLocation().GetI()-1;
 		int j= step.GetLocation().GetJ()-1;
 		List<Point> toChange= new LinkedList<>();
@@ -180,6 +192,8 @@ public class Board {
 				doChange=true;
 				break;
 			}
+			i--;
+			j--;
 		}
 		if(doChange){
 			for (Point p:toChange){
@@ -187,7 +201,7 @@ public class Board {
 			}
 		}
 	}
-	private void CheckDownRIght(CellState[][] board,int size,Step step){
+	private void CheckDownRIght(char[][] board,int size,Step step){
 		int i=step.GetLocation().GetI()+1;
 		int j= step.GetLocation().GetJ()+1;
 		List<Point> toChange= new LinkedList<>();
@@ -198,6 +212,8 @@ public class Board {
 				doChange=true;
 				break;
 			}
+			j++;
+			i++;
 		}
 		if(doChange){
 			for (Point p:toChange){
@@ -205,7 +221,7 @@ public class Board {
 			}
 		}
 	}
-	private void CheckDownLeft(CellState[][] board,int size,Step step){
+	private void CheckDownLeft(char[][] board,int size,Step step){
 		int i=step.GetLocation().GetI()+1;
 		int j= step.GetLocation().GetJ()-1;
 		List<Point> toChange= new LinkedList<>();
@@ -216,6 +232,8 @@ public class Board {
 				doChange=true;
 				break;
 			}
+			i++;
+			j--;
 		}
 		if(doChange){
 			for (Point p:toChange){
@@ -223,8 +241,8 @@ public class Board {
 			}
 		}
 	}
-	private CellState[][] CloneBoard(){
-		CellState newBoard[][]= new CellState[_size][_size];
+	private char[][] CloneBoard(){
+		char newBoard[][]= new char[_size][_size];
 		for(int i=0;i<_size;i++){
 			for(int j=0;j<_size;j++){
 				newBoard[i][j]=_actualBoard[i][j];
@@ -233,10 +251,12 @@ public class Board {
 		return newBoard;
 
 	}
-	public void SetCell(Point p, CellState state){
+
+
+	public void SetCell(Point p, char state){
 		this._actualBoard[p.GetI()][p.GetJ()]=state;
 	}
-	public CellState GetCell(int i, int j){
+	public char GetCell(int i, int j){
 		return this._actualBoard[i][j];
 	}
 	public int GetSize() {

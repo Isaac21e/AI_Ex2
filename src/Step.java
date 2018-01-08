@@ -4,9 +4,9 @@
 public class Step {
 
 	private Point _location;
-	private CellState _state;
+	private char _state;
 
-	public Step(Point point,CellState state){
+	public Step(Point point,char state){
 		_location=point;
 		_state=state;
 	}
@@ -14,7 +14,7 @@ public class Step {
 	public Point GetLocation(){
 		return _location;
 	}
-	public CellState GetState(){
+	public char GetState(){
 		return _state;
 	}
 
