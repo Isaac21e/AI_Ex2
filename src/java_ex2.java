@@ -1,9 +1,14 @@
 /**
- * Created by Isaac on 12/28/2017.
+ * The main class.
+ * Creates board from input.txt, calculates the winner ('W' or 'B') and writes it to output.txt.
  */
 public class java_ex2 {
 
-
+	/**
+	 * reades board from file, creates a board object and return it
+	 * @param path path of file with board content
+	 * @return the board as an object
+	 */
 	public static Board CreateBoard(String path){
 		FileHandler reader= new FileHandler();
 		String[] content =reader.Read(path);
@@ -27,6 +32,12 @@ public class java_ex2 {
 		}
 		return new Board(board,size);
 	}
+
+	/**
+	 * Gets winner of the game
+	 * @param board the board
+	 * @return the winner; 'W' if the white player wins, 'B' if the Black wins.
+	 */
 	public static char GetWinner(Board board){
 		Answer next=null;
 		char player=Enum.BLACK;
@@ -41,10 +52,14 @@ public class java_ex2 {
 		}
 		return board.GameEnded();
 	}
+
+	/**
+	 * This main functions.
+	 * @param args args to main
+	 */
 	public static void main(String[] args){
 
-		Board board=CreateBoard("input2.txt");
-		//board.Print();
+		Board board=CreateBoard("input.txt");
 		char winner=GetWinner(board);
 		FileHandler.Write("output.txt",Character.toString(winner));
 		System.out.println();

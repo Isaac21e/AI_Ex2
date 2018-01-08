@@ -1,31 +1,18 @@
-/**
- * Created by Isaac on 1/8/2018.
- */
-
 import java.util.LinkedList;
 import java.util.List;
 
-/***
-01 function minimax(node, depth, maximizingPlayer)
-		02     if depth = 0 or node is a terminal node
-		03         return the heuristic value of node
-
-		04     if maximizingPlayer
-		05         bestValue := −∞
-		06         for each child of node
-		07             v := minimax(child, depth − 1, FALSE)
-		08             bestValue := max(bestValue, v)
-		09         return bestValue
-
-		10     else    (* minimizing player *)
-		11         bestValue := +∞
-		12         for each child of node
-		13             v := minimax(child, depth − 1, TRUE)
-		14             bestValue := min(bestValue, v)
-		15         return bestValue
- *///
+/**
+ * The minmax class.
+ * This class runs the MINIMAX algorithm, to predict the winner of the reversi game.
+ */
 public class MinMax {
-
+	/**
+	 * gets the board and the current player, and return the possible boards (aka, screen shots of the game)
+	 * that can be created by possible moves.
+	 * @param board the board.
+	 * @param player the current player.
+	 * @return
+	 */
 	public static List<Board> GetPossibleBoards(Board board, char player){
 		List<Step> possibleSteps= board.GetValidSteps(player);
 		List<Board> possibleBoards= new LinkedList<>();
@@ -37,6 +24,14 @@ public class MinMax {
 		}
 		return possibleBoards;
 	}
+
+	/**
+	 * runs the minmax algorithm
+	 * @param board the board to run the algorithm
+	 * @param depth depth of algorithm
+	 * @param player the current player
+	 * @return
+	 */
 	public static Answer RunMiniMax(Board board, int depth, char player){
 		if(depth == 0 || board.GameEnded() != Enum.NOT_ENDED){
 			return new Answer(board,board.Heuristic());

@@ -3,17 +3,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Isaac on 1/5/2018.
+ * Tha board class.
+ * The board class represents an matix of chars, with 'Empty', 'Black' or 'White' in its cells
+ * it makes calculates on the board and returns a new board when makeing a move.
+ * actually, the board is a 'screen shot' of a the game in a certain moment.
  */
 public class Board {
 
-	char[][] _actualBoard;
-	int _size;
-
-	int _numOfBlacks;
-	int _numOfWhites;
-	int _numBlacksOnBorder;
-	int _numWhitesOnBorder;
+	private char[][] _actualBoard;
+	private int _size;
+	private int _numOfBlacks;
+	private int _numOfWhites;
+	private int _numBlacksOnBorder;
+	private int _numWhitesOnBorder;
 
 
 
@@ -27,18 +29,10 @@ public class Board {
 		_actualBoard=actualBoard;
 		_size=size;
 	}
-	public int GetNumOfBlacks() {
-		return _numOfBlacks;
-	}
-	public int GetNumOfWhites() {
-		return _numOfWhites;
-	}
-	public int GetNumBlacksOnBorder() {
-		return _numBlacksOnBorder;
-	}
-	public int GetNumWhitesOnBorder() {
-		return _numWhitesOnBorder;
-	}
+
+	/**
+	 * calculates and updates members (num of black, whites, black on border and whites on border)
+	 */
 	public void CalcStates(){
 		_numOfBlacks=0;
 		_numOfWhites=0;
@@ -47,16 +41,21 @@ public class Board {
 		for(int i=0;i<_size;i++){
 			for(int j=0;j<_size;j++){
 				if(_actualBoard[i][j]== Enum.BLACK){
+					//found a black cell
 					_numOfBlacks++;
 				}
 				if(_actualBoard[i][j]== Enum.WHITE){
+					//found a white cell
 					_numOfWhites++;
 				}
 				if(i==0 || j==0 || i==_size-1 || j==_size-1){
+					//in border
 					if(_actualBoard[i][j]== Enum.BLACK){
+						//found a black cell in border
 						_numBlacksOnBorder++;
 					}
 					if(_actualBoard[i][j]== Enum.WHITE){
+						//found a white cell in border
 						_numWhitesOnBorder++;
 					}
 				}
